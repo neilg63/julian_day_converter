@@ -30,8 +30,6 @@ must implements:
 - from_fuzzy_iso_string(dt_str: &str) -> Option<Self>
 - weekday_index(&self, offset_secs: i32) -> u8
 
-## Implemtation for chrono::NaiveDateTime
-
 ## Usage
 
 ```rust
