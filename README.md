@@ -37,43 +37,51 @@ use chrono::NaiveDateTime;
 use julian_day_converter::*;
 
 fn main() {
-  // Convert a sample Julian Day value to a valid NaiveDateTime object and then use to_jd() for interoperability
-  // with astronomical applications
-  // The return value is a result consistent with other parse functions
-  // julian_day_to_datetime(jd_value) is equivalent to NaiveDateTime::from_jd(jd_value)
-  let sample_julian_day = 2459827.25;
-  if let Ok(date_time) = julian_day_to_datetime(sample_julian_day) {
-    let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
-    println!("The Julian day {} is {} as ISO date-time", sample_julian_day, formatted_date_time_string);
+    // Convert a sample Julian Day value to a valid NaiveDateTime object and then use to_jd() for interoperability
+    // with astronomical applications
+    // The return value is a result consistent with other parse functions
+    // julian_day_to_datetime(jd_value) is equivalent to NaiveDateTime::from_jd(jd_value)
+    let sample_julian_day = 2459827.25;
+    if let Ok(date_time) = julian_day_to_datetime(sample_julian_day) {
+      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
+      println!("The Julian day {} is {} as ISO date-time", sample_julian_day, formatted_date_time_string);
+    }
+    
+    // Convert an approximate date-time string to a valid NaiveDateTime object and then use to_jd() for interoperability
+    // with astronomical applications
+    // The return value is a result consistent with other parse functions
+    let approx_date_time = "2023-11-09 15"; // 3pm 
+    if let Some(date_time) = NaiveDateTime::from_fuzzy_iso_string(approx_date_time) {
+      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
+      println!("The input time of `{}` is assumed to be {} UTC and in Julian Days is {}", approx_date_time, formatted_date_time_string, date_time.to_jd());
     }
   
-  // Convert an approximate date-time string to a valid NaiveDateTime object and then use to_jd() for interoperability
-  // with astronomical applications
-  // The return value is a result consistent with other parse functions
-  let approx_date_time = "2023-11-09 15"; // 3pm 
-  if let Ok(date_time) = NaiveDateTime::from_fuzzy_iso_string(approx_date_time) {
-    let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
-    println!("The input time of `{}` is assumed to be {} UTC and in Julian Days is {}", approx_date_time, formatted_date_time_string, date_time.to_jd());
-  }
+    let historical_jd = 2334317.39336563;
+    // Convert to a NaiveDateTime object and then apply its format method
+    // The return value is an options consistent with other chrono::NaiveDateTime constructors
+    if let Some(date_time) = NaiveDateTime::from_jd(historical_jd) {
+      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
+      println!("The meteorite landed on Earth at {} Julian days or {}", historical_jd, formatted_date_time_string);
+    }
 
-  let historical_jd = 2334317.39336563;
-  // Convert to a NaiveDateTime object and then apply its format method
-  // The return value is a result consistent with other parse functions
-  if let Ok(date_time) = NaiveDateTime::from_jd(historical_jd) {
-    let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
-    println!("The meteorite landed on Earth at {} Julian days or {}", historical_jd, formatted_date_time_string);
-  }
+    let prehistoric_julian_day = -190338.875;
+    // Convert to a NaiveDateTime object and then apply its format method
+    // The return value is a result consistent with other parse functions
+    if let Some(date_time) = NaiveDateTime::from_jd(prehistoric_julian_day) {
+      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
+      println!("An asteroid hit the Earth at {} Julian days or {}", historical_jd, formatted_date_time_string);
+    }
 
-  let unix_timestamp = 169938309;
-  // does not require conversion to a NaiveDateTime object
-  let jd = unixtime_to_julian_day(unix_timestamp);
-  println!("All valid 64 bit integers can be converted to Julian days, e.g. {} is {} Julian days", unix_timestamp, jd);
+    let unix_timestamp = 169938309;
+    // does not require conversion to a NaiveDateTime object
+    let jd = unixtime_to_julian_day(unix_timestamp);
+    println!("All valid 64 bit integers can be converted to Julian days, e.g. {} is {} Julian days", unix_timestamp, jd);
+    
+    let julian_day = 2134937.3937f64;
+    // does not require conversion to a NaiveDateTime object
+    let ts = julian_day_to_unixtime(julian_day);
+    println!("Some historical Julian days may yield very high or low unix timestamp values e.g. {} is {} as a unix timestamp", julian_day, ts);
   
-  let julian_day = 2134937.3937f64;
-  // does not require conversion to a NaiveDateTime object
-  let ts = julian_day_to_unixtime(julian_day);
-  println!("Some historical Julian days may yield very high or low unix timestamp values e.g. {} is {} as a unix timestamp", julian_day, ts);
-
-}
+  }
 
 ```
