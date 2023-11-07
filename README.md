@@ -24,11 +24,11 @@ This returns a result type consistent with other Rust parsers. The approximate *
 ## Traits
 
 ## JulianDay
-must implements:
-- to_jd() -> f64
-- from_jd(jd: f64) -> Option<Self>
-- from_fuzzy_iso_string(dt_str: &str) -> Option<Self>
-- weekday_index(&self, offset_secs: i32) -> u8
+must implement:
+- ```to_jd() -> f64```
+- ```from_jd(jd: f64) -> Option<Self>```
+- ```from_fuzzy_iso_string(dt_str: &str) -> Option<Self>```
+- ```weekday_index(&self, offset_secs: i32) -> u8```
 
 ## Usage
 
