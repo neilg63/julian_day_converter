@@ -1,10 +1,10 @@
 # Julian Day Compatibility methods for Chrono
 
-This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC), and is used mainly by astronomers. Julian days facilitate calculations when dealing with extended periods of time.
+This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC). Julian days facilitate calculations when dealing with extended periods of time.
 
-It adds a trait and 4 utility methods to the Rust's standard datetime crate, Chrono, and as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware chrono::DateTime .
+This crate adds a trait and 4 utility methods to the Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware *chrono::DateTime*.
 
-A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily interoperability with a [Rust wrapper](https://github.com/neilg63/astro-calc-api) for the [Swiss Ephemeris](https://github.com/aloistr/swisseph) application.
+A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
 ## Direct functions
 
@@ -12,7 +12,7 @@ A similar [julianday](https://crates.io/crates/julianday) crate exists to handle
 Converts a unix timestamp directly to Julian days as a 64-bit float, compatibile with many astronomical applications.
 
 ### julian_day_to_unixtime(jd: f64) -> i64
-Converts a Julian Day as a signed 64-bit integer. As many date-time functions require timestamps as 32-bit integers, some dates before 1901 and after 2038 may be out of range
+Converts a Julian Day as a signed 64-bit integer. If the timestamp has to be cast to a 32-bit integers, dates before 1902 and after 2038 will be out of range.
 
 ### julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8
 Calculates the weekday index, where Sunday = 0, Monday = 1 and Saturday = 6. This will work for any historical or future Julian Day, whether or not it can be converted to a NaiveDateTime object.
@@ -21,15 +21,15 @@ Calculates the weekday index, where Sunday = 0, Monday = 1 and Saturday = 6. Thi
 This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other parser methods in the same library.
 
 ### datetime_to_julian_day(dt_str: &str) -> Result<f64, &'static str>
-This returns a result type consistent with other Rust parsers. The approximate **YYYY-mm-dd HH:MM:SS** date-time string is corrected to a plain ISO-8601 format without milliseconds or timezone suffixes. This is equivalent to instantiating a NaiveDateTime object from **NaiveDateTime::from_fuzzy_iso_string()** and then using the **date_time.to_jd()** method;
+This returns a result type consistent with other Rust parsers. The approximate **YYYY-mm-dd HH:MM:SS** date-time string is corrected to a plain ISO-8601 format without milliseconds or timezone suffixes. This is equivalent to instantiating a NaiveDateTime object from *NaiveDateTime::from_fuzzy_iso_string()* and then using the *date_time.to_jd()* method;
 
 ## Traits
 
 ## JulianDay
 must implement:
-- ```to_jd() -> f64```
+- ```to_jd(&self) -> f64```
 - ```from_jd(jd: f64) -> Option<Self>```
-- ```from_fuzzy_iso_string(dt_str: &str) -> Option<Self>```
+- ```from_fuzzy_iso_string(&self, dt_str: &str) -> Option<Self>```
 - ```weekday_index(&self, offset_secs: i32) -> u8```
 
 ## Usage
@@ -82,7 +82,7 @@ fn main() {
     let julian_day = 2134937.3937f64;
     // does not require conversion to a NaiveDateTime object
     let ts = julian_day_to_unixtime(julian_day);
-    println!("Some historical Julian days may yield very high or low unix timestamp values e.g. {} is {} as a unix timestamp", julian_day, ts);
+    println!("Some historical and far-future Julian days may yield very big timestamp values e.g. {} is {} as a unix timestamp", julian_day, ts);
   
   }
 
