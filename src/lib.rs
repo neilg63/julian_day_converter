@@ -86,7 +86,7 @@ impl JulianDay for NaiveDateTime {
     }
   }
 
-  fn from_fuzzy_iso_string(dt_str: &str) -> Option<NaiveDateTime> {
+  fn from_fuzzy_iso_string(dt_str: &str) -> Option<Self> {
     iso_fuzzy_string_to_datetime(dt_str)
   }
 
