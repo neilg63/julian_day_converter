@@ -1,7 +1,7 @@
 [package]
 name = "julian_day_converter"
 authors = ["Neil Gardner"]
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 description = "Provides Julian Day conversion methods for chrono::NaiveDateTime and direct conversion to and from unix timestamps as well as a supplementary fuzzy ISO date-time parser"
 repository = "https://github.com/neilg63/julian_day_converter"

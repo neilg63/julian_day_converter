@@ -1,15 +1,15 @@
 # Julian Day Compatibility methods for Chrono
 
-This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A **Julian day** represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4712 BCE (-4713-11-24T12:00:00 UTC), and is used primarily by astronomers, and in software for easily calculating elapsed days between two events. Julian days facilitate calculations when dealing with extended periods of time.
+This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC), and is used mainly by astronomers. Julian days facilitate calculations when dealing with extended periods of time.
 
 It adds a trait and 4 utility methods to the Rust's standard datetime crate, Chrono, and as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware chrono::DateTime .
 
-A similar [julianday](https://crates.io/crates/julianday) crate exists, but only handles Julian days as integers and converts them to chrono::NaiveDate only. I developed this crate primarily interoperability with a Rust wrapper of the [Swiss Ephemeris](https://github.com/aloistr/swisseph) library.
+A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily interoperability with a [Rust wrapper](https://github.com/neilg63/astro-calc-api) for the [Swiss Ephemeris](https://github.com/aloistr/swisseph) application.
 
 ## Direct functions
 
 ### unixtime_to_julian_day(ts: i64) -> f64
-Converts a unix timestamp directly to Julian Day as a 64-bit float, compatibile with many astronomical applications.
+Converts a unix timestamp directly to Julian days as a 64-bit float, compatibile with many astronomical applications.
 
 ### julian_day_to_unixtime(jd: f64) -> i64
 Converts a Julian Day as a signed 64-bit integer. As many date-time functions require timestamps as 32-bit integers, some dates before 1901 and after 2038 may be out of range
