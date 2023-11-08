@@ -34,7 +34,10 @@ pub fn datetime_to_julian_day(dt_str: &str) -> Result<f64, &'static str> {
   }
 }
 
-
+/*
+* This trait may be implemented by any Date or DateTime object
+* An implementation for chrono::NaiveDateTime is provided below
+*/
 pub trait JulianDay {
   
   /*
@@ -107,6 +110,7 @@ pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
  * Utility function to convert any ISO-8601-like date string to a Chrono NaiveDateTime object
  * This function accepts YYYY-mm-dd HH:MM:SS separated by a space or letter T and with or without hours, minutes or seconds.
  * Missing time parts will be replaced by 00, hence 2022-06-23 will be 2022-06-23 00:00:00 UTC and 22-06-23 18:20 will be 2022-06-23 18:30:00
+ * Missing month and day parts will be replaced by `01`.
  */
 pub fn iso_fuzzy_string_to_datetime(dt: &str) -> Option<NaiveDateTime> {
   let dt_base = if dt.contains('.') { dt.split(".").next().unwrap() } else { dt };
