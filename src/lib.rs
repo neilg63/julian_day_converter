@@ -62,7 +62,7 @@ pub trait JulianDay {
     * without the month day: 2023-11 (rounded to the month start)
     * Year only: 2023 (rounded to the year start)
   */
-  fn from_fuzzy_iso_string(dt_str: &str) -> Option<NaiveDateTime>;
+  fn from_fuzzy_iso_string(dt_str: &str) -> Option<Self>  where Self: Sized;
 
   /*
   * Current weekday index, where Sunday = 0, Monday = 1 and Saturday = 6
