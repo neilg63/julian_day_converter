@@ -2,7 +2,9 @@
 
 This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A **Julian day** represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4712 BCE (-4713-11-24T12:00:00 UTC), and is used primarily by astronomers, and in software for easily calculating elapsed days between two events. Julian days facilitate calculations when dealing with extended periods of time.
 
-It adds a Trait and 4 utility methods to the Rust's standard datetime crate, Chrono, and as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware chrono::DateTime .
+It adds a trait and 4 utility methods to the Rust's standard datetime crate, Chrono, and as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware chrono::DateTime .
+
+A similar [julianday](https://crates.io/crates/julianday) crate exists, but only handles Julian days as integers and converts them to chrono::NaiveDate only. I developed this crate primarily interoperability with a Rust wrapper of the [Swiss Ephemeris](https://github.com/aloistr/swisseph) library.
 
 ## Direct functions
 
