@@ -2,7 +2,7 @@
 
 This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC). Julian days facilitate calculations when dealing with extended periods of time.
 
-This crate adds a trait and 4 utility methods to the Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware *chrono::DateTime*.
+This crate adds three traits and 4 utility methods to the Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware *chrono::DateTime*.
 
 A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
@@ -29,8 +29,16 @@ This returns a result type consistent with other Rust parsers. The approximate *
 must implement:
 - ```to_jd(&self) -> f64```
 - ```from_jd(jd: f64) -> Option<Self>```
+
+## FromFuzzyISOString
+must implement:
 - ```from_fuzzy_iso_string(&self, dt_str: &str) -> Option<Self>```
+
+## WeekdayIndex
+must implement:
 - ```weekday_index(&self, offset_secs: i32) -> u8```
+
+If the solar or standard local timezone offset is known, this calculates the weekday index (Sunday = 0, Monday = 1 ... Saturday = 6) for timezone-neutral DateTime objects. The solar timezone offset in seconds can be calculated from the longitude as 1º = 240 seconds, e.g. -3º (or 3ºW) would be -720.
 
 ## Usage
 
