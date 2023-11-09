@@ -1,5 +1,5 @@
 [![mirror](https://img.shields.io/badge/mirror-github-blue)](https://github.com/neilg63/julian_day_converter)
-[![crates.io](https://img.shields.io/crates/v/julianday.svg)](https://crates.io/crates/julian_day_converter)
+[![crates.io](https://img.shields.io/crates/v/julian_day_converter.svg)](https://crates.io/crates/julian_day_converter)
 [![docs.rs](https://docs.rs/julian_day_converter/badge.svg)](https://docs.rs/julian_day_converter)
 
 # Julian Day Compatibility methods for Chrono
