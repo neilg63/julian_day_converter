@@ -6,7 +6,7 @@
 
 This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC). Julian days facilitate calculations when dealing with extended periods of time.
 
-This crate adds three traits and 4 utility methods to the Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC and may be converted to a timezone-aware *chrono::DateTime*.
+This crate adds three traits and 6 utility methods to the Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time objects are UTC, but may be converted to a timezone-aware *chrono::DateTime*.
 
 A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
@@ -21,11 +21,14 @@ Converts a Julian Day as a signed 64-bit integer. If the timestamp has to be cas
 ### julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8
 Calculates the weekday index, where Sunday = 0, Monday = 1 and Saturday = 6. This will work for any historical or future Julian Day, whether or not it can be converted to a NaiveDateTime object.
 
-### julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, &'static str>
+### julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, ParsedError>
 This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other parser methods in the same library.
 
-### datetime_to_julian_day(dt_str: &str) -> Result<f64, &'static str>
-This returns a result type consistent with other Rust parsers. The approximate **YYYY-mm-dd HH:MM:SS** date-time string is corrected to a plain ISO-8601 format without milliseconds or timezone suffixes. This is equivalent to instantiating a NaiveDateTime object from *NaiveDateTime::from_fuzzy_iso_string()* and then using the *date_time.to_jd()* method;
+### datetime_to_julian_day(dt_str: &str) -> Result<f64, ParsedError>
+Convert a fuzzy ISO-8601-like string to a Julian day value. This returns a result type consistent with other Rust parsers. The approximate **YYYY-mm-dd HH:MM:SS** date-time string is corrected to a plain ISO-8601 format without milliseconds or timezone suffixes. This is equivalent to instantiating a NaiveDateTime object from *NaiveDateTime::from_fuzzy_iso_string()* and then using the *date_time.to_jd()* method;
+
+### iso_fuzzy_string_to_datetime(dt: &str) -> Result<NaiveDateTime, ParsedError>
+Convert a fuzzy ISO-8601-like string to a NaiveDateTime. This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other constructors in the same library. NB: Before version 0.3 this return an option
 
 ## Traits
 

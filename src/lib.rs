@@ -1,9 +1,15 @@
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, ParseError};
 
 /// Public constant that may be useful to library users
 pub const JULIAN_DAY_UNIX_EPOCH_DAYS: f64 = 2440587.5; // 1970-01-01 00:00:00 UTC
 
 const JULIAN_DAY_UNIX_EPOCH_WEEKDAY: u8 = 4; // 1970-01-01 00:00:00 was a Wednesday UTC
+
+///
+/// Custom Error Type for date range conversion errors
+/// 
+#[derive(Debug)]
+pub struct DateRangeCoversionError;
 
 ///
 ///  Convert a unix timestamp as a 64 bit integer to julian days as a 64-bit float
@@ -46,11 +52,11 @@ pub fn julian_day_to_unixtime(jd: f64) -> i64 {
 /// }
 /// ```
 ///
-pub fn julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, &'static str> {
+pub fn julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, DateRangeCoversionError> {
   if let Some(dt) = NaiveDateTime::from_timestamp_opt(julian_day_to_unixtime(jd), 0) {
     Ok(dt)
   } else {
-    Err("Julian Day out of range")
+    Err(DateRangeCoversionError)
   }
 }
 
@@ -67,11 +73,10 @@ pub fn julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, &'static str> {
 /// }
 /// ```
 ///
-pub fn datetime_to_julian_day(dt_str: &str) -> Result<f64, &'static str> {
-  if let Some(dt) = iso_fuzzy_string_to_datetime(dt_str) {
-      Ok(unixtime_to_julian_day(dt.timestamp()))
-  } else {
-      Err("invalid ISO date-compatible format")
+pub fn datetime_to_julian_day(dt_str: &str) -> Result<f64, ParseError> {
+  match iso_fuzzy_string_to_datetime(dt_str) {
+      Ok(dt) => Ok(unixtime_to_julian_day(dt.timestamp())),
+      Err(error) => Err(error)
   }
 }
 
@@ -173,7 +178,11 @@ impl JulianDay for NaiveDateTime {
 impl FromFuzzyISOString for NaiveDateTime {
   /// construct a DateTime object from an exact or approximate ISO-8601-compatible string
   fn from_fuzzy_iso_string(dt_str: &str) -> Option<Self> {
-    iso_fuzzy_string_to_datetime(dt_str)
+    if let Ok(dt) = iso_fuzzy_string_to_datetime(dt_str) {
+      Some(dt)
+    } else {
+      None
+    }
   }
 }
 
@@ -206,12 +215,12 @@ pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
 /// use chrono::NaiveDateTime;
 /// use julian_day_converter::*;
 /// 
-/// if let Some(date_time) = iso_fuzzy_string_to_datetime("2023-11-08 14:17") {
+/// if let Ok(date_time) = iso_fuzzy_string_to_datetime("2023-11-08 14:17") {
 ///   println!("The Julian day to the nearest minute is {}", date_time.to_jd());
 /// }
 /// ```
 ///
-pub fn iso_fuzzy_string_to_datetime(dt: &str) -> Option<NaiveDateTime> {
+pub fn iso_fuzzy_string_to_datetime(dt: &str) -> Result<NaiveDateTime, ParseError> {
   let dt_base = if dt.contains('.') { dt.split(".").next().unwrap() } else { dt };
   let clean_dt = dt_base.replace("T", " ").trim().to_string();
   let mut dt_parts = clean_dt.split(" ");
@@ -234,12 +243,7 @@ pub fn iso_fuzzy_string_to_datetime(dt: &str) -> Option<NaiveDateTime> {
     time_parts.push("00");
   }
   let formatted_str = format!("{} {}:{}:{}", date_part, time_parts[0], time_parts[1], time_parts[2]);
-  if let Ok(dt) = NaiveDateTime::parse_from_str(formatted_str.as_str(), "%Y-%m-%d %H:%M:%S") {
-    Some(dt)
-  } else {
-    // "invalid ISO-compatibile format")
-    None
-  }
+  NaiveDateTime::parse_from_str(formatted_str.as_str(), "%Y-%m-%d %H:%M:%S")
 }
 
 #[cfg(test)]
