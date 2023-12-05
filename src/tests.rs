@@ -1,6 +1,8 @@
 use crate::*;
 use chrono::{NaiveDateTime, NaiveDate, NaiveTime};
 
+#[cfg(test)]
+
 #[test]
 fn test_basic_date() {
     let julian_day = 2459827.25;
@@ -59,4 +61,12 @@ fn test_unixtime_conversion() {
     let expected_unixtime: i64 = 1662310800;
     let result: i64 = julian_day_to_unixtime(julian_day);
     assert_eq!(expected_unixtime, result);
+}
+
+#[test]
+fn test_julian_day_datetime_utc() {
+  let datetime = julian_day_to_datetime(2460193.875).ok();
+  let expected_time = "2023-12-02T15:00:00";
+  let result = datetime.format("%Y-%m-%dT%H:%M:%S").to_string();
+  assert_eq!(expected_unixtime, result);
 }
