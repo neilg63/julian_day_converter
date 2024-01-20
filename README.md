@@ -4,7 +4,7 @@
 
 # Julian Day Compatibility methods for Chrono
 
-This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC). Julian days facilitate calculations when dealing with extended periods of time and should not be confused with the Julian Calendar, which affects leap year assigment rules.
+This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC). Julian days facilitate calculations when dealing with extended periods of time and should not be confused with the Julian Calendar, which affects leap year assignment rules.
 
 This crate adds three traits and 6 utility methods to Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time values are UTC, but may be converted to a timezone-aware *chrono::DateTime*.
 
