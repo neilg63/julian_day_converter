@@ -8,12 +8,19 @@ This library provides compatibility with astronomical applications that use Juli
 
 This crate adds three traits and 6 utility methods to Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time values are UTC, but may be converted to a timezone-aware *chrono::DateTime*.
 
+### 0.3.3 Release Notes
+The core `to_jd()` and `from_jd()` methods have been updated to respect the deprecation of two chrono methods, replacing `NaiveDateTime.timestamp()` with `NaiveDateTime.and_utc().timestamp()` and `NaivedateTime::from_timestamp_opt()` with `DateTime::from_timestamp(julian_day_to_unixtime(jd), 0)` and `DateTime::naive_utc()` ensuring longer-term compatibility. As a result, the minimum supported chrono version is 0.4.31.
+
+The core `from_jd(julian_day_value_f64)` conversion method now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)`and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
+
+The supplementary fuzzy-datetime conversion functions have been marked as deprecated and have been reimplemented with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
+
 A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
 ## Direct functions
 
 ### unixtime_to_julian_day(ts: i64) -> f64
-Converts a unix timestamp directly to Julian days as a 64-bit float, compatibile with many astronomical applications.
+Converts a unix timestamp directly to Julian days as a 64-bit float, compatible with many astronomical applications.
 
 ### julian_day_to_unixtime(jd: f64) -> i64
 Converts a Julian Day as a signed 64-bit integer. If the timestamp has to be cast to a 32-bit integers, dates before 1902 and after 2038 will be out of range.
@@ -24,11 +31,15 @@ Calculates the weekday index, where Sunday = 0, Monday = 1 and Saturday = 6. Thi
 ### julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, ParsedError>
 This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other parser methods in the same library.
 
-### datetime_to_julian_day(dt_str: &str) -> Result<f64, ParsedError>
+
+### Fuzzy Date-time Depreacation
+NB: These functions are now deprecated and will be removed from version 0.4.0 but will be available in a separate crate [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime) .
+
+### datetime_to_julian_day(dt_str: &str) -> Result<f64, ParsedError> (deprecated)
 Convert a fuzzy ISO-8601-like string to a Julian day value. This returns a result type consistent with other Rust parsers. The approximate **YYYY-mm-dd HH:MM:SS** date-time string is corrected to a plain ISO-8601 format without milliseconds or timezone suffixes. This is equivalent to instantiating a NaiveDateTime object from *NaiveDateTime::from_fuzzy_iso_string()* and then using the *date_time.to_jd()* method;
 
-### iso_fuzzy_string_to_datetime(dt: &str) -> Result<NaiveDateTime, ParsedError>
-Convert a fuzzy ISO-8601-like string to a NaiveDateTime. This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other constructors in the same library. NB: Before version 0.3 this return an option
+### iso_fuzzy_string_to_datetime(dt: &str) -> Result<NaiveDateTime, ParsedError> (deprecated)
+Convert a fuzzy ISO-8601-like string to a NaiveDateTime. This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other constructors in the same library. NB: Before version 0.3 this return an option. This is available directly in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime) .
 
 ## Traits
 
@@ -37,15 +48,19 @@ must implement:
 - ```to_jd(&self) -> f64```
 - ```from_jd(jd: f64) -> Option<Self>```
 
-## FromFuzzyISOString
-must implement:
-- ```from_fuzzy_iso_string(&self, dt_str: &str) -> Option<Self>```
 
 ## WeekdayIndex
 must implement:
 - ```weekday_index(&self, offset_secs: i32) -> u8```
 
 If the solar or standard local timezone offset is known, this calculates the weekday index (Sunday = 0, Monday = 1 ... Saturday = 6) for timezone-neutral DateTime objects. The solar timezone offset in seconds can be calculated from the longitude as 1º = 240 seconds, e.g. -3º (or 3ºW) would be -720.
+
+
+## FromFuzzyISOString (deprecated) 
+Available in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime)
+must implement:
+- ```from_fuzzy_iso_string(&self, dt_str: &str) -> Option<Self>```
+
 
 ## Usage
 
