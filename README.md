@@ -13,7 +13,7 @@ The core `to_jd()` and `from_jd()` methods have been updated to respect the depr
 
 The core `from_jd(julian_day_value_f64)` conversion method now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)`and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
 
-The supplementary fuzzy-datetime conversion functions have been marked as deprecated and have been reimplemented with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
+The supplementary fuzzy-datetime conversion functions have been marked as *deprecated* and have been reimplemented with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
 
 A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
@@ -78,15 +78,6 @@ fn main() {
       let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
       println!("The Julian day {} is {} as ISO date-time", sample_julian_day, formatted_date_time_string);
     }
-    
-    // Convert an approximate date-time string to a valid NaiveDateTime object and then use to_jd() for interoperability
-    // with astronomical applications
-    // The return value is a result consistent with other parse functions
-    let approx_date_time = "2023-11-09 15"; // 3pm 
-    if let Some(date_time) = NaiveDateTime::from_fuzzy_iso_string(approx_date_time) {
-      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
-      println!("The input time of `{}` is assumed to be {} UTC and in Julian Days is {}", approx_date_time, formatted_date_time_string, date_time.to_jd());
-    }
   
     let historical_jd = 2334317.39336563;
     // Convert to a NaiveDateTime object and then apply its format method
@@ -94,6 +85,14 @@ fn main() {
     if let Some(date_time) = NaiveDateTime::from_jd(historical_jd) {
       let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
       println!("The meteorite landed on Earth at {} Julian days or {}", historical_jd, formatted_date_time_string);
+    }
+
+    let historical_datetime = "1876-09-25T15:45:00";
+    // Convert to a NaiveDateTime object and then apply its format method
+    // The return value is an options consistent with other chrono::NaiveDateTime constructors
+    if let Ok(date_time) = NaiveDateTime::from_str(historical_datetime) {
+      let jd = date_time.to_jd();
+      println!("The date {} is {} in Julian days", historical_datettime, jd);
     }
 
     let prehistoric_julian_day = -190338.875;
@@ -116,4 +115,16 @@ fn main() {
   
   }
 
+```
+
+### Deprecated method example
+```
+// Convert an approximate date-time string to a valid NaiveDateTime object and then use to_jd() for interoperability
+// with astronomical applications
+// The return value is a result consistent with other parse functions
+let approx_date_time = "2023-11-09 15"; // 3pm 
+if let Some(date_time) = NaiveDateTime::from_fuzzy_iso_string(approx_date_time) {
+  let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
+  println!("The input time of `{}` is assumed to be {} UTC and in Julian Days is {}", approx_date_time, formatted_date_time_string, date_time.to_jd());
+}
 ```

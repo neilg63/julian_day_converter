@@ -13,6 +13,11 @@ fn test_basic_date() {
     let incorrect_datetime = NaiveDateTime::new(NaiveDate::from_ymd_opt(1970,1, 1).unwrap(),NaiveTime::from_hms_opt(0,0,0).unwrap());
     let formatted_datetime = result.unwrap_or(incorrect_datetime).format("%Y-%m-%dT%H:%M:%S").to_string();
     assert_eq!(formatted_datetime, expected_datetime_utc.to_string());
+
+    let historical_datetime = "1876-09-25T12:00:00";
+    let date_time = NaiveDateTime::from_str(historical_datetime).unwrap();
+    let jd = date_time.to_jd();
+    assert_eq!(jd,  2406523.0);
 }
 
 
@@ -87,4 +92,5 @@ fn test_fuzzy_datetime() {
     let expected_datetime_utc = "2022-09-04T18:00:00";
     let dt = NaiveDateTime::from_fuzzy_iso_string(&input_datetime_utc).unwrap_or(incorrect_datetime);
     let formatted_datetime = dt.format("%Y-%m-%dT%H:%M:%S").to_string();
+    assert_eq!(formatted_datetime, expected_datetime_utc.to_owned());
 }

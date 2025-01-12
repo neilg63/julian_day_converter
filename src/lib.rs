@@ -175,13 +175,13 @@ pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
 ///   println!("The approximate date time {} is {} in julian days", approx_date_time, julian_day);
 /// }
 /// ```
-/// Will be removed in 0.4.0. You can use either chrono::NaiveDateTime::from_str() with normalised ISO 6801 formats or the fuzzy-datetime crate
-/// for fuzzy date-time parsing and then call .to_jd() on the resulting object
+/// Will be removed in 0.4.0. You can use either chrono::NaiveDateTime::from_str() with standard ISO 6801 formats or parse_from_str() with custom format specifiers.
+/// Form more versatile date-time parsing and correction, use the fuzzy-datetime crate, especially for inconsistent data sources
 ///
 #[deprecated(since = "0.3.3", note = "use fuzzy-datetime crate instead")]
 pub fn datetime_to_julian_day(dt_str: &str) -> Result<f64, ParseError> {
   match iso_fuzzy_string_to_datetime(dt_str) {
-      Ok(dt) => Ok(unixtime_to_julian_day(dt.timestamp())),
+      Ok(dt) => Ok(unixtime_to_julian_day(dt.and_utc().timestamp())),
       Err(error) => Err(error)
   }
 }
