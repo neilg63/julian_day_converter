@@ -4,9 +4,11 @@
 
 # Julian Day Compatibility methods for Chrono
 
-This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian day* represents the number of days since the beginning of the Julian period, which started at 12 noon on 24th November 4713 BCE (-4713-11-24T12:00:00 UTC). Julian days facilitate calculations when dealing with extended periods of time and should not be confused with the Julian Calendar, which affects leap year assignment rules.
+This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian Day* represents the number of days since the beginning of the Julian period, which started at 12 noon on November 24, 4713 BCE (-4713-11-24T12:00:00 UTC). Julian Days facilitate calculations over extended periods and should not be confused with the Julian Calendar, which affects leap year rules.
 
-This crate adds three traits and 6 utility methods to Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time values are UTC, but may be converted to a timezone-aware *chrono::DateTime*.
+This crate adds three traits and six utility methods to Rust's standard datetime crate, Chrono, as well as standalone functions to convert to and from Unix timestamps. All date-time values are in UTC but can be converted to a timezone-aware *chrono::DateTime*.
+
+Please note that Julian Day values as 64-bit floats are always rounded to the nearest second when converted to Unix time or *chrono::NaiveDateTime*.
 
 ### 0.3.3 Release Notes
 The core `to_jd()` and `from_jd()` methods have been updated to respect the deprecation of two chrono methods, replacing `NaiveDateTime.timestamp()` with `NaiveDateTime.and_utc().timestamp()` and `NaivedateTime::from_timestamp_opt()` with `DateTime::from_timestamp(julian_day_to_unixtime(jd), 0)` and `DateTime::naive_utc()` ensuring longer-term compatibility. As a result, the minimum supported chrono version is 0.4.31.
@@ -92,7 +94,7 @@ fn main() {
     // The return value is an options consistent with other chrono::NaiveDateTime constructors
     if let Ok(date_time) = NaiveDateTime::from_str(historical_datetime) {
       let jd = date_time.to_jd();
-      println!("The date {} is {} in Julian days", historical_datettime, jd);
+      println!("The date {} is {} in Julian days", historical_datetime, jd);
     }
 
     let prehistoric_julian_day = -190338.875;
@@ -100,7 +102,7 @@ fn main() {
     // The return value is a result consistent with other parse functions
     if let Some(date_time) = NaiveDateTime::from_jd(prehistoric_julian_day) {
       let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
-      println!("An asteroid hit the Earth at {} Julian days or {}", historical_jd, formatted_date_time_string);
+      println!("An asteroid hit the Earth at {} Julian days or {}", prehistoric_julian_day, formatted_date_time_string);
     }
 
     let unix_timestamp = 169938309;
