@@ -34,7 +34,7 @@ Calculates the weekday index, where Sunday = 0, Monday = 1 and Saturday = 6. Thi
 This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other parser methods in the same library.
 
 
-### Fuzzy Date-time Depreacation
+### Fuzzy Date-time Deprecation
 NB: These functions are now deprecated and will be removed from version 0.4.0 but will be available in a separate crate [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime) .
 
 ### datetime_to_julian_day(dt_str: &str) -> Result<f64, ParsedError> (deprecated)
@@ -120,7 +120,7 @@ fn main() {
 ```
 
 ### Deprecated method example
-```
+```rust
 // Convert an approximate date-time string to a valid NaiveDateTime object and then use to_jd() for interoperability
 // with astronomical applications
 // The return value is a result consistent with other parse functions
