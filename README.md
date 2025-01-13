@@ -107,18 +107,16 @@ fn main() {
 ---
 
 
-### Deprecated methods and struct
-
-
-## FromFuzzyISOString (deprecated) 
+### Deprecated struct and functions
+#### FromFuzzyISOString (deprecated) 
 Available in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime)
 must implement:
 - ```from_fuzzy_iso_string(&self, dt_str: &str) -> Option<Self>```
 
 These functions are now deprecated and will be removed from version 0.4.0 but will be available in a separate crate [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime) with more advanced date-time string interpretation and correction.
 
-#### datetime_to_julian_day(dt_str: &str) -> Result<f64, ParsedError> (deprecated)
-#### iso_fuzzy_string_to_datetime(dt: &str) -> Result<NaiveDateTime, ParsedError> (deprecated)
+##### datetime_to_julian_day(dt_str: &str) -> Result<f64, ParsedError> (deprecated)
+##### iso_fuzzy_string_to_datetime(dt: &str) -> Result<NaiveDateTime, ParsedError> (deprecated)
 These methods convert fuzzy ISO-like strings to either to Julian day value or NaiveDateTime objects as shown below.
 
 
