@@ -31,8 +31,7 @@ Converts a Julian Day as a signed 64-bit integer. If the timestamp has to be cas
 Calculates the weekday index, where Sunday = 0, Monday = 1 and Saturday = 6. This will work for any historical or future Julian Day, whether or not it can be converted to a NaiveDateTime object.
 
 ### julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, ParsedError>
-This returns a result type consistent with other Rust parsers, while its implementation for chrono::NaiveDateTime returns an option in keeping with other parser methods in the same library.
-
+Converts a valid Julian Day within a range of -9999-01-01 to 9999-12-31 to NaiveDateTime, assumed to be UTC. This is the same as `NaiveDateTime::from_js()`, except it returns a `Result` rather than an `Option`.
 
 ## Traits
 
