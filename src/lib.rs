@@ -8,10 +8,12 @@ pub const JULIAN_DAY_UNIX_EPOCH_WEEKDAY: u8 = 4; // 1970-01-01 00:00:00 was a We
 
 /// Minimum Julian Day value date-time conversion. NB: 0 is -4713-11-24 12:00:00 UTC
 /// NB: Some databases may not support dates before -4713
-pub const JULIAN_DAY_MIN_SUPPORTED: f64 = -1_930_999.5; // -9999-01-01 00:99:00 UTC
+/// -9999-01-01 00:99:00 UTC
+pub const JULIAN_DAY_MIN_SUPPORTED: f64 = -1_930_999.5;
 
 /// Maximum Julian Day value for date-time conversion. NB: 0 is -4713-11-24 12:00:00 UTC
-pub const JULIAN_DAY_MAX_SUPPORTED: f64 = 5_373_484.499999; // 9999-12-31 23:59:59 UTC
+/// 9999-12-31 23:59:59 UTC
+pub const JULIAN_DAY_MAX_SUPPORTED: f64 = 5_373_484.499999;
 
 ///
 /// Custom Error Type for date range conversion errors

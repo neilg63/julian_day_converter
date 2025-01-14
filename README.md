@@ -107,7 +107,7 @@ fn main() {
 ---
 
 
-### Deprecated struct and functions
+### Deprecated Trait and Functions
 #### FromFuzzyISOString (deprecated) 
 Available in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime)
 must implement:
