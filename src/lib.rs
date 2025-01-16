@@ -128,7 +128,7 @@ pub trait WeekdayIndex {
   fn weekday_index(&self, offset_secs: i32) -> u8;
 
   /// ISO 8601 and Java/C# style day of week index starting from Monday = 1 to Sunday = 7
-  /// NB: Python's datetime.datetime.weekday() method returns 0 for Monday and 6 for Sunday
+  /// NB: Python's datetime.weekday() method returns 0 for Monday and 6 for Sunday
   fn weekday_number(&self, offset_secs: i32) -> u8;
 }
 
@@ -139,7 +139,7 @@ impl WeekdayIndex for NaiveDateTime {
   }
 
   /// Return the weekday index (Mon = 0, Tue = 1 ... Sun = 6) in a timezone-neutral context by adding the offset in seconds
-  /// as used in Java, Python, and ISO 8601
+  /// as used in Java, C# and ISO 8601 (Python's datetime.weekday() method is 0-based from Monday)
   fn weekday_number(&self, offset_secs: i32) -> u8 {
     julian_day_to_weekday_number(self.to_jd(), offset_secs)
   }
@@ -157,8 +157,8 @@ pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
 }
 
 /// Return the weekday index (Mon = 0, Tue = 1 ... Sun = 6) in a timezone-neutral context by adding the offset in seconds
-/// as used in Java, Python, and C#
-fn julian_day_to_weekday_number(jd: f64, offset_secs: i32) -> u8 {
+/// as used in Java, C# and ISO 8601 (Python's datetime.weekday() method is 0-based from Monday)
+pub fn julian_day_to_weekday_number(jd: f64, offset_secs: i32) -> u8 {
   let index = julian_day_to_weekday_index(jd, offset_secs);
   if index == 0 {
     7
