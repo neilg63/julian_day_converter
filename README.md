@@ -44,6 +44,7 @@ Converts a valid Julian Day within a range of -9999-01-01 to 9999-12-31 to Naive
 - `day_of_week(&self, offset_secs: i32) -> u8`
 
 If the solar or standard local timezone offset is known, this calculates the weekday index (Sunday = 0, Monday = 1 ... Saturday = 6) for timezone-neutral DateTime objects. The solar timezone offset in seconds can be calculated from the longitude as 1º = 240 seconds, e.g. -3º (or 3ºW) would be -720.
+This is consistent with Chrono's [`%%w` format specifier](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) and with JavaScript's Date.getDay() method.
 The alternative `day_of_week(offset_secs: i32)` method returns an index starting from Monday (Sunday = 6), consistent with like-named methods in Java, C# and Python.
 
 ## Usage

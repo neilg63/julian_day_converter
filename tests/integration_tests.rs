@@ -82,6 +82,9 @@ fn test_weekday_index() {
     // Test with Java/C3/Puython style day of week index
     let python_day_of_week = 6; // Sunday = 6
     assert_eq!(dt.day_of_week(0), python_day_of_week);
+
+
+    assert_eq!(dt.weekday_index(0), dt.format("%w").to_string().parse::<u8>().unwrap());
 }
 
 
