@@ -20,6 +20,15 @@ fn test_basic_date() {
     assert_eq!(jd,  2406523.0);
 }
 
+#[test]
+fn test_parse_from_str() {
+    
+    let historic_time_str = "04/11/1877 18:00";
+    let target_julian_day = 2406928.25;
+    let result = NaiveDateTime::parse_from_str(&historic_time_str, "%d/%m/%Y %H:%M");
+    assert_eq!(result.unwrap().to_jd(), target_julian_day);
+}
+
 
 #[test]
 fn test_first_julian_day() {
@@ -69,28 +78,10 @@ fn test_weekday_index() {
     assert_eq!(dt.weekday_index(0), expected_weekday_index);
     // Should be the next day at UTC+10 (e.g. Australia)
     assert_eq!(dt.weekday_index(36000), expected_weekday_index + 1);
-}
 
-// "This test is for a deprecated function and will be removed in version 0.4.0"
-#[test]
-#[allow(deprecated)]
-fn test_julian_day() {
-    let incorrect_datetime = NaiveDateTime::new(NaiveDate::from_ymd_opt(1970,1, 1).unwrap(),NaiveTime::from_hms_opt(0,0,0).unwrap());
-    let expected_julian_day = 2459827.25;
-    let datetime_utc = "2022-09-04T18:00:00";
-    let dt = NaiveDateTime::from_fuzzy_iso_string(&datetime_utc).unwrap_or(incorrect_datetime);
-    assert_eq!(dt.to_jd(), expected_julian_day);
+    // Test with Java/C3/Puython style day of week index
+    let python_day_of_week = 6; // Sunday = 6
+    assert_eq!(dt.day_of_week(0), python_day_of_week);
 }
 
 
-// "This test is for a deprecated function and will be removed in version 0.4.0"
-#[test]
-#[allow(deprecated)]
-fn test_fuzzy_datetime() {
-    let incorrect_datetime = NaiveDateTime::new(NaiveDate::from_ymd_opt(1970,1, 1).unwrap(),NaiveTime::from_hms_opt(0,0,0).unwrap());
-    let input_datetime_utc = "2022-09-04 18";
-    let expected_datetime_utc = "2022-09-04T18:00:00";
-    let dt = NaiveDateTime::from_fuzzy_iso_string(&input_datetime_utc).unwrap_or(incorrect_datetime);
-    let formatted_datetime = dt.format("%Y-%m-%dT%H:%M:%S").to_string();
-    assert_eq!(formatted_datetime, expected_datetime_utc.to_owned());
-}
