@@ -4,7 +4,7 @@ use chrono::{DateTime, NaiveDateTime, ParseError};
 pub const JULIAN_DAY_UNIX_EPOCH_DAYS: f64 = 2440587.5; // 1970-01-01 00:00:00 UTC
 
 /// The weekday index for the Unix Epoch (1970-01-01 UTC) is Thursday (4)
-pub const JULIAN_DAY_UNIX_EPOCH_WEEKDAY: u8 = 4; // 1970-01-01 00:00:00 was a Wednesday UTC
+pub const JULIAN_DAY_UNIX_EPOCH_WEEKDAY: u8 = 4;
 
 /// Minimum Julian Day value date-time conversion. NB: 0 is -4713-11-24 12:00:00 UTC
 /// NB: Some databases may not support dates before -4713
