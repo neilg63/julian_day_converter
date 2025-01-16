@@ -10,15 +10,6 @@ This crate adds two traits to supplement Rust's standard datetime crate, Chrono,
 
 Please note that Julian Day values as 64-bit floats are always rounded to the nearest second when converted to Unix time or *chrono::NaiveDateTime*.
 
-### 0.3.3 Release Notes
-The core `to_jd()` and `from_jd(jd: f64)` methods have been updated to ensure future compatibility with the *chrono* crate by replacing all calls to deprecated methods with the newer methods introduced in version 0.4.31, which is now the minimum supported version.
-
-`NaiveDateTime::from_jd(jd: f64)` now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)` and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
-
-The supplementary fuzzy-datetime conversion functions have been marked as *deprecated* and made available with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
-
-A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
-
 ## Direct Functions
 
 ### unixtime_to_julian_day(ts: i64) -> f64
@@ -107,8 +98,19 @@ fn main() {
 - `JULIAN_DAY_MIN_SUPPORTED`: **-1_930_999.5**. Minimum Julian Day value date-time conversion via Chrono, -4713-11-24 12:00:00 UTC
 - `JULIAN_DAY_MAX_SUPPORTED`: **5_373_484.499999**. Max Julian day value via Chrono, i.e. 9999-12-31 23:59:59 UTC
 
+---
+
+### 0.3.3 Release Notes
+The core `to_jd()` and `from_jd(jd: f64)` methods have been updated to ensure future compatibility with the *chrono* crate by replacing all calls to deprecated methods with the newer methods introduced in version 0.4.31, which is now the minimum supported version.
+
+`NaiveDateTime::from_jd(jd: f64)` now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)` and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
+
+The supplementary fuzzy-datetime conversion functions have been marked as *deprecated* and made available with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
+
+A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
 ---
+
 ## Earlier versions
 
 Versions before 0.4.0 had some date/time interpretation and correction functions able to handle ISO-like input strings with varying degrees of accuracy. These have now moved to [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
