@@ -147,7 +147,7 @@ impl WeekdayIndex for NaiveDateTime {
 
 /// Calculate the weekday index from a given Julian Day with timezone offsets in seconds
 /// NB: This is zero-based, where Sunday = 0, Monday = 1, ..., Saturday = 6
-/// Some languages use a different weekday index, e.g. Python, Java, and C#
+/// Some languages use a different weekday index, e.g. Python
 pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
   let ref_jd = jd + (offset_secs as f64 / 86400f64);
   let days_since_1970 = ref_jd - JULIAN_DAY_UNIX_EPOCH_DAYS as f64;
@@ -156,7 +156,7 @@ pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
   (days_since_index + JULIAN_DAY_UNIX_EPOCH_WEEKDAY) % 7
 }
 
-/// Return the weekday index (Mon = 0, Tue = 1 ... Sun = 6) in a timezone-neutral context by adding the offset in seconds
+/// Return the weekday number (Mon = 1 to Sun = 7) in a timezone-neutral context by adding the offset in seconds
 /// as used in Java, C# and ISO 8601 (Python's datetime.weekday() method is 0-based from Monday)
 pub fn julian_day_to_weekday_number(jd: f64, offset_secs: i32) -> u8 {
   let index = julian_day_to_weekday_index(jd, offset_secs);
