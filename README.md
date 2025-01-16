@@ -13,13 +13,13 @@ Please note that Julian Day values as 64-bit floats are always rounded to the ne
 ### 0.3.3 Release Notes
 The core `to_jd()` and `from_jd(jd: f64)` methods have been updated to ensure future compatibility with the *chrono* crate by replacing all calls to deprecated methods with the newer methods introduced in version 0.4.31, which is now the minimum supported version.
 
-The core `from_jd(jd: f64)` conversion method now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)` and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
+`NaiveDateTime::from_jd(jd: f64)` now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)` and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
 
-The supplementary fuzzy-datetime conversion functions have been marked as *deprecated* and have been reimplemented with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
+The supplementary fuzzy-datetime conversion functions have been marked as *deprecated* and made available with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
 
 A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
-NB: 0.3.4 contains editorial changes only.
+NB: 0.3.4 and 0.3.5 contains editorial changes only.
 
 ## Direct functions
 
