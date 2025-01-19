@@ -80,7 +80,7 @@ fn test_weekday_index() {
     assert_eq!(dt.weekday_index(36000), expected_weekday_index + 1);
 
     // Test with Java/C3/Puython style day of week index
-    let iso_weekday_number = 7; // Sunday = 7
+    let iso_weekday_number = 7; // Sunday = 7 with UTC offset
     assert_eq!(dt.weekday_number(0), iso_weekday_number);
 
 

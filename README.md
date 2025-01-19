@@ -101,7 +101,7 @@ fn main() {
 ---
 ### Release Notes
 #### 0.4.2 
-0.4.0 streamlined the crate (see notes on earlier versions). Subsequent updates relate to editorial changes only.
+0.4.0 streamlined the crate (see notes on earlier versions). Subsequent updates contain editorial changes only.
 
 #### 0.3.3
 The core `to_jd()` and `from_jd(jd: f64)` methods have been updated to ensure future compatibility with the *chrono* crate by replacing all calls to deprecated methods with the newer methods introduced in version 0.4.31, which is now the minimum supported version.
@@ -118,7 +118,7 @@ A similar [julianday](https://crates.io/crates/julianday) crate exists to handle
 
 Versions before 0.4.0 had a date/time interpretation and correction function and trait able to handle ISO-like input strings with varying degrees of approximation. These have now moved to [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
 
-However, Chrono's `NaiveDateTime::parse_from_str(date_str: &str, fmt: &str)` is versatile enough for most purposes if all your input times follow the same format.
+However, Chrono's `NaiveDateTime::parse_from_str(date_str: &str, fmt: &str)` is versatile enough for most purposes if all your input times follow the same format, as detailed in this overview of the crate's [strftime Module](https://docs.rs/chrono/latest/chrono/format/strftime/index.html#specifiers).
 
 ```rust
 let historic_time_str = "04/11/1877 18:00";
