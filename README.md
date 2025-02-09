@@ -9,7 +9,7 @@ This library provides compatibility with astronomical applications that use Juli
 
 This crate adds two traits to supplement Rust's standard datetime crate, Chrono, as well as four standalone functions to convert directly to and from Unix timestamps. All date-time values are in UTC but can be converted to a timezone-aware *chrono::DateTime*.
 
-Please note that Julian Day values as 64-bit floats are always rounded to the nearest millisecond when *chrono::NaiveDateTime*. Prior to version 0.4.3, they were rounded to the nearest second. 
+Please note that Julian Day values as 64-bit floats are always rounded to the nearest millisecond with *chrono::NaiveDateTime*. Prior to version 0.4.3, they were rounded to the nearest second. 
 
 ## Direct Functions
 
