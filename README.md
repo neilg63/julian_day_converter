@@ -13,20 +13,20 @@ Please note that Julian Day values as 64-bit floats are always rounded to the ne
 
 ## Direct Functions
 
-### unixtime_to_julian_day(ts: i64) -> f64
-### unix_millis_to_julian_day(ts: i64) -> f64
+- `unixtime_to_julian_day(ts: i64) -> f64`
+- `unix_millis_to_julian_day(ts: i64) -> f64`
 These functions convert Unix timestamps directly to Julian days as a 64-bit float, compatible with many astronomical applications. The first converts Unix timestamps as seconds and the latter as milliseconds.
 
-### julian_day_to_unixtime(jd: f64) -> i64
-### julian_day_to_unix_millis(jd: f64) -> i64
+- `julian_day_to_unixtime(jd: f64) -> i64`
+- `julian_day_to_unix_millis(jd: f64) -> i64`
 These functions convert a Julian Day to a signed 64-bit integer that represents either the number of seconds or the number of milliseconds since the start of 1970 UTC.
 
 If the second timestamp has to be cast to a 32-bit integer, dates before 1902 and after 2038 will be out of range. With 64-bit integers, the range is approximately ± 292 million years with milliseconds and 292 billion years with seconds. 
 
-### julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8
+- `julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8`
 Calculates the weekday index, where Sunday = 0, Monday = 1, and Saturday = 6. This will work for any historical or future Julian Day, whether or not it can be converted to a NaiveDateTime object.
 
-### julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, ParsedError>
+- `julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, ParsedError>`
 Converts a valid Julian Day within a range of -9999-01-01 to 9999-12-31 to NaiveDateTime, assumed to be UTC. This is the same as `NaiveDateTime::from_jd()`, except it returns a `Result` rather than an `Option`.
 
 ## Traits
