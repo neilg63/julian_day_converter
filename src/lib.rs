@@ -2,7 +2,8 @@ use chrono::{DateTime, NaiveDateTime};
 use std::fmt;
 
 /// Public constant that may be useful to library users
-pub const JULIAN_DAY_UNIX_EPOCH_DAYS: f64 = 2440587.5; // 1970-01-01 00:00:00 UTC
+/// 1970-01-01 00:00:00 UTC
+pub const JULIAN_DAY_UNIX_EPOCH_DAYS: f64 = 2440587.5; 
 
 /// The weekday index for the Unix Epoch (1970-01-01 UTC) is Thursday (4)
 pub const JULIAN_DAY_UNIX_EPOCH_WEEKDAY: u8 = 4;

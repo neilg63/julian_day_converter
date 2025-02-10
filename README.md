@@ -116,7 +116,11 @@ fn main() {
 - `JULIAN_DAY_MAX_SUPPORTED`: **5_373_484.499999**. Max Julian day value via Chrono, i.e. 9999-12-31 23:59:59 UTC
 
 ---
+
 ### Release Notes
+#### 0.4.4 
+*Chrono 0.4.31+* is now added as a dependency with `default-features = false`, letting developers decide which optional dependencies they need. However, `features = ["std"]` is added under dev-dependencies for the integration test and some of the above examples with the `.format()` method. Thanks to [Doug A](https://github.com/DougAnderson444) for that.
+
 #### 0.4.3 
 Two new functions were added to convert to and from unix timestamps as milliseconds and the core `NaiveDateTime::to_jd()` and `NaiveDateTime::from_jd(jd: f64)` methods now use `DateTime::from_timestamp_millis(millis: i64)` for millisecond precision.
 
