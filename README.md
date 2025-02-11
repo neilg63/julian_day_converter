@@ -119,7 +119,7 @@ fn main() {
 
 ### Release Notes
 #### 0.4.4 
-*Chrono 0.4.31+* is now added as a dependency with `default-features` set to false, letting developers decide which optional dependencies they need. However, the *std* feature set is added as a dev-dependency for the integration test and some of the above examples with the *format* method. Thanks to [Doug A](https://github.com/DougAnderson444) for that.
+*Chrono 0.4.31+* is now added as a dependency with `default-features` set to false, letting developers decide which optional features they need. However, the *std* feature set is added as a dev-dependency for the integration tests and examples with the *format* method. Thanks to [Doug A](https://github.com/DougAnderson444) for that.
 
 #### 0.4.3 
 Two new functions were added to convert to and from unix timestamps as milliseconds and the core `NaiveDateTime::to_jd()` and `NaiveDateTime::from_jd(jd: f64)` methods now use `DateTime::from_timestamp_millis(millis: i64)` for millisecond precision.
