@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use chrono::{Datelike, NaiveDate, NaiveDateTime, NaiveTime, Timelike};
+use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
 use julian_day_converter::*;
 
 #[cfg(test)]

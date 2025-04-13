@@ -118,6 +118,11 @@ fn main() {
 ---
 
 ### Release Notes
+#### 0.4.5 
+In the core `julian_day_to_unix_millis` and `julian_day_to_unixtime` functions,  `.round()` is applied before casting `f64` to `i64` floating-point truncation errors during repeated float/integer casts.
+DateRangeConversionError now implements `fmt` and minimum and maximum supported Julian day bounds are validated within a range. 
+Thanks to [meteorgan](https://github.com/meteorgan) for these enhancements.
+
 #### 0.4.4 
 *Chrono 0.4.31+* is now added as a dependency with `default-features` set to false, letting developers decide which optional features they need. However, the *std* feature set is added as a dev-dependency for the integration tests and examples with the *format* method. Thanks to [Doug A](https://github.com/DougAnderson444) for that.
 
@@ -125,7 +130,7 @@ fn main() {
 Two new functions were added to convert to and from unix timestamps as milliseconds and the core `NaiveDateTime::to_jd()` and `NaiveDateTime::from_jd(jd: f64)` methods now use `DateTime::from_timestamp_millis(millis: i64)` for millisecond precision.
 
 #### 0.4.2 
-0.4.0 streamlined the crate (see notes on earlier versions). Subsequent updates contain editorial changes only.
+0.4.0 streamlined the crate (see notes on earlier versions).
 
 #### 0.3.3
 The core `to_jd()` and `from_jd(jd: f64)` methods have been updated to ensure future compatibility with the *chrono* crate by replacing all calls to deprecated methods with the newer methods introduced in version 0.4.31, which is now the minimum supported version.
