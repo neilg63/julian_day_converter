@@ -52,6 +52,11 @@ fn test_unixtime_conversion() {
     let expected_unixtime: i64 = 1662314400;
     let result: i64 = julian_day_to_unixtime(julian_day);
     assert_eq!(expected_unixtime, result);
+
+    let julian_day: f64 = 2459717.08070103;
+    let expected_unixtime: i64 = 1652795773;
+    let result: i64 = julian_day_to_unixtime(julian_day);
+    assert_eq!(expected_unixtime, result);
 }
 
 #[test]
@@ -61,6 +66,11 @@ fn test_julian_day_datetime_utc() {
     let expected_datetime_string = "2023-09-06T09:00:00".to_string();
     let result = datetime.format("%Y-%m-%dT%H:%M:%S").to_string();
     assert_eq!(expected_datetime_string, result);
+
+    let datetime = julian_day_to_datetime(2459717.08070103).ok().unwrap();
+    let expected_datetime_string = "2022-05-17T13:56:12.569".to_string();
+    let result = datetime.format("%Y-%m-%dT%H:%M:%S%.f");
+    assert_eq!(expected_datetime_string, result.to_string());
 }
 
 #[test]

@@ -64,7 +64,7 @@ pub fn unixtime_to_julian_day(ms: i64) -> f64 {
 /// let unix_millis: i64 = julian_day_to_unix_millis(julian_day);
 /// ```
 pub fn julian_day_to_unix_millis(jd: f64) -> i64 {
-    ((jd - JULIAN_DAY_UNIX_EPOCH_DAYS) * 86_400_000.0) as i64
+    ((jd - JULIAN_DAY_UNIX_EPOCH_DAYS) * 86_400_000.0).round() as i64
 }
 
 /// Convert Julian day as a 64-bit float to Unix timestamp seconds as a signed 64-bit integer
@@ -77,7 +77,7 @@ pub fn julian_day_to_unix_millis(jd: f64) -> i64 {
 /// let unix_seconds: i64 = julian_day_to_unixtime(julian_day);
 /// ```
 pub fn julian_day_to_unixtime(jd: f64) -> i64 {
-  ((jd - JULIAN_DAY_UNIX_EPOCH_DAYS) * 86_400.0) as i64
+  ((jd - JULIAN_DAY_UNIX_EPOCH_DAYS) * 86_400.0).round() as i64
 }
 
 /// Convert Julian day as a 64-bit float to a timezone-neutral chrono::NaiveDateTime object
