@@ -2,7 +2,6 @@
 [![crates.io](https://img.shields.io/crates/v/julian_day_converter.svg)](https://crates.io/crates/julian_day_converter)
 [![docs.rs](https://docs.rs/julian_day_converter/badge.svg)](https://docs.rs/julian_day_converter)
 
-
 # Julian Day Compatibility Methods for Chrono
 
 This library provides compatibility with astronomical applications that use Julian Days as 64-bit floats. A *Julian Day* represents the number of days since the beginning of the Julian period, which started at 12 noon on November 24, 4713 BCE (-4713-11-24T12:00:00 UTC). Julian Days facilitate calculations over extended periods and should not be confused with the Julian Calendar, which affects leap year rules.
@@ -16,14 +15,14 @@ Please note that Julian Day values as 64-bit floats are always rounded to the ne
 - `unixtime_to_julian_day(ts: i64) -> f64`
 - `unix_millis_to_julian_day(ts: i64) -> f64`
 
-These functions convert Unix timestamps directly to Julian days as a 64-bit float, compatible with many astronomical applications. The first converts Unix timestamps as seconds and the latter as milliseconds.
+These functions convert Unix timestamps directly to Julian days as 64-bit floats, compatible with many astronomical applications. The first converts Unix timestamps as seconds, and the latter as milliseconds.
 
 - `julian_day_to_unixtime(jd: f64) -> i64`
 - `julian_day_to_unix_millis(jd: f64) -> i64`
 
 These functions convert a Julian Day to a signed 64-bit integer that represents the time elapsed either in seconds or milliseconds since the start of 1970 UTC.
 
-If the second timestamp has to be cast to a 32-bit integer, dates before 1902 and after 2038 will be out of range. With 64-bit integers, the range is approximately ± 292 million years with milliseconds and 292 billion years with seconds. 
+If the second timestamp has to be cast to a 32-bit integer, dates before 1902 and after 2038 will be out of range. With 64-bit integers, the range is approximately ±292 million years with milliseconds and ±292 billion years with seconds. 
 
 - `julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8`
 
@@ -60,29 +59,21 @@ use julian_day_converter::*;
 fn main() {
     // Convert a sample Julian Day value to a valid NaiveDateTime object and then use to_jd() for interoperability
     // with astronomical applications
-    // The return value is a result consistent with other parse functions
-    // julian_day_to_datetime(jd_value) is equivalent to NaiveDateTime::from_jd(jd_value)
     let sample_julian_day = 2459827.25;
     if let Ok(date_time) = julian_day_to_datetime(sample_julian_day) {
-      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S3fZ").to_string();
+      let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string();
       println!("The Julian day {} is {} as ISO date-time", sample_julian_day, formatted_date_time_string);
-      // Should print:
-      // The Julian day 2459827.25 is 2022-09-04T18:00:00.000Z as ISO date-time
     }
   
     let historical_jd = 2334317.39336563;
     // Convert to a NaiveDateTime object and then apply its format method
-    // The return value is an option consistent with other chrono::NaiveDateTime constructors
     if let Some(date_time) = NaiveDateTime::from_jd(historical_jd) {
       let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string();
       println!("The meteorite landed on Earth at {} Julian days or {}", historical_jd, formatted_date_time_string);
-      // should print: 
-      // The meteorite landed on Earth at 2334317.39336563 Julian days or 1679-01-15T21:26:26.791Z
     }
 
     let historical_datetime = "1876-09-25T15:45:00";
     // Convert to a NaiveDateTime object and then apply its format method
-    // The return value is an option consistent with other chrono::NaiveDateTime constructors
     if let Ok(date_time) = NaiveDateTime::from_str(historical_datetime) {
       let jd = date_time.to_jd();
       println!("The date {} is {} in Julian days", historical_datetime, jd);
@@ -90,23 +81,23 @@ fn main() {
 
     let prehistoric_julian_day = -190338.875;
     // Convert to a NaiveDateTime object and then apply its format method
-    // The return value is a result consistent with other parse functions
     if let Some(date_time) = NaiveDateTime::from_jd(prehistoric_julian_day) {
       let formatted_date_time_string = date_time.format("%Y-%m-%dT%H:%M:%S").to_string();
       println!("An asteroid hit the Earth at {} Julian days or {}", prehistoric_julian_day, formatted_date_time_string);
     }
 
     let unix_timestamp = 169938309;
-    // does not require conversion to a NaiveDateTime object
+    // Does not require conversion to a NaiveDateTime object
     let jd = unixtime_to_julian_day(unix_timestamp);
     println!("All valid 64-bit integers can be converted to Julian days, e.g. {} is {} Julian days", unix_timestamp, jd);
     
     let julian_day = 2134937.3937f64;
-    // does not require conversion to a NaiveDateTime object
+    // Does not require conversion to a NaiveDateTime object
     let ts = julian_day_to_unixtime(julian_day);
     println!("Some historical and far-future Julian days may yield very big timestamp values e.g. {} is {} as a Unix timestamp", julian_day, ts);
 }
 ```
+
 ### Constants
 
 - `JULIAN_DAY_UNIX_EPOCH_DAYS`: **2440587.5**. The Julian day value at 1970-01-01 00:00:00 UTC
@@ -120,7 +111,7 @@ fn main() {
 ### Release Notes
 #### 0.4.5 
 In the core `julian_day_to_unix_millis` and `julian_day_to_unixtime` functions,  `.round()` is applied before casting `f64` to `i64` floating-point truncation errors during repeated float/integer casts.
-DateRangeConversionError now implements `fmt` and minimum and maximum supported Julian day bounds are validated within a range. 
+`DateRangeConversionError` now implements `fmt` and `julian_day_to_datetime` validates the minimum and maximum bounds within a range. 
 Thanks to [meteorgan](https://github.com/meteorgan) for these enhancements.
 
 #### 0.4.4 
@@ -135,9 +126,7 @@ Two new functions were added to convert to and from unix timestamps as milliseco
 #### 0.3.3
 The core `to_jd()` and `from_jd(jd: f64)` methods have been updated to ensure future compatibility with the *chrono* crate by replacing all calls to deprecated methods with the newer methods introduced in version 0.4.31, which is now the minimum supported version.
 
-`NaiveDateTime::from_jd(jd: f64)` now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)` and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported by i64 and f64 respectively.
-
-The supplementary fuzzy-datetime conversion functions have been marked as *deprecated* and made available with a broader range of options in [fuzzy-datetime](https://crates.io/crates/fuzzy-datetime).
+`NaiveDateTime::from_jd(jd: f64)` now only works within a range from `-9999-01-01T00:00:00` to `9999-12-31T23:59:59`. However, `unixtime_to_julian_day(timestamp: i64)` and `julian_day_to_unixtime(jd: f64)` work within a much wider range supported b i64 and f64 respectively.
 
 A similar [julianday](https://crates.io/crates/julianday) crate exists to handle Julian days as integers and converts them to *chrono::NaiveDate* only. I developed this crate primarily to ensure interoperability with an [Astrological API server](https://github.com/neilg63/astro-calc-api) that leverages the [Swiss Ephemeris](https://github.com/aloistr/swisseph) calculation engine.
 
