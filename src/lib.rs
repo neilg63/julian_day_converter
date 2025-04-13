@@ -3,7 +3,7 @@ use std::fmt;
 
 /// Public constant that may be useful to library users
 /// 1970-01-01 00:00:00 UTC
-pub const JULIAN_DAY_UNIX_EPOCH_DAYS: f64 = 2440587.5; 
+pub const JULIAN_DAY_UNIX_EPOCH_DAYS: f64 = 2440587.5;
 
 /// The weekday index for the Unix Epoch (1970-01-01 UTC) is Thursday (4)
 pub const JULIAN_DAY_UNIX_EPOCH_WEEKDAY: u8 = 4;
@@ -25,7 +25,10 @@ pub struct DateRangeConversionError;
 
 impl fmt::Display for DateRangeConversionError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "DateRangeConversionError: The provided Julian Day is out of the supported range.")
+        write!(
+            f,
+            "DateRangeConversionError: The provided Julian Day is out of the supported range."
+        )
     }
 }
 
@@ -41,7 +44,6 @@ pub fn unix_millis_to_julian_day(ms: i64) -> f64 {
     (ms as f64 / 86_400_000.0) + JULIAN_DAY_UNIX_EPOCH_DAYS
 }
 
-
 /// Convert a Unix timestamp seconds as a 64-bit integer to Julian days as a 64-bit float
 ///
 /// ## Example:
@@ -51,7 +53,7 @@ pub fn unix_millis_to_julian_day(ms: i64) -> f64 {
 /// let julian_day: f64 = unixtime_to_julian_day(1_672_929_282);
 /// ```
 pub fn unixtime_to_julian_day(ms: i64) -> f64 {
-  (ms as f64 / 86_400.0) + JULIAN_DAY_UNIX_EPOCH_DAYS
+    (ms as f64 / 86_400.0) + JULIAN_DAY_UNIX_EPOCH_DAYS
 }
 
 /// Convert Julian day as a 64-bit float to Unix timestamp milliseconds as a signed 64-bit integer
@@ -77,7 +79,7 @@ pub fn julian_day_to_unix_millis(jd: f64) -> i64 {
 /// let unix_seconds: i64 = julian_day_to_unixtime(julian_day);
 /// ```
 pub fn julian_day_to_unixtime(jd: f64) -> i64 {
-  ((jd - JULIAN_DAY_UNIX_EPOCH_DAYS) * 86_400.0).round() as i64
+    ((jd - JULIAN_DAY_UNIX_EPOCH_DAYS) * 86_400.0).round() as i64
 }
 
 /// Convert Julian day as a 64-bit float to a timezone-neutral chrono::NaiveDateTime object
@@ -93,7 +95,7 @@ pub fn julian_day_to_unixtime(jd: f64) -> i64 {
 /// }
 /// ```
 pub fn julian_day_to_datetime(jd: f64) -> Result<NaiveDateTime, DateRangeConversionError> {
-    if jd >= JULIAN_DAY_MIN_SUPPORTED && jd <= JULIAN_DAY_MAX_SUPPORTED {
+    if (JULIAN_DAY_MIN_SUPPORTED..=JULIAN_DAY_MAX_SUPPORTED).contains(&jd) {
         let milliseconds = julian_day_to_unix_millis(jd);
         if let Some(dt) = DateTime::from_timestamp_millis(milliseconds) {
             return Ok(dt.naive_utc());
@@ -109,7 +111,9 @@ pub trait JulianDay {
     fn to_jd(&self) -> f64;
 
     /// Convert from a Julian Day as f64 to DateTime Object
-    fn from_jd(jd: f64) -> Option<Self> where Self: Sized;
+    fn from_jd(jd: f64) -> Option<Self>
+    where
+        Self: Sized;
 }
 
 impl JulianDay for NaiveDateTime {
@@ -185,5 +189,9 @@ pub fn julian_day_to_weekday_index(jd: f64, offset_secs: i32) -> u8 {
 /// as used in Java, C# and ISO 8601 (Python's datetime.weekday() method is 0-based from Monday)
 pub fn julian_day_to_weekday_number(jd: f64, offset_secs: i32) -> u8 {
     let index = julian_day_to_weekday_index(jd, offset_secs);
-    if index == 0 { 7 } else { index }
+    if index == 0 {
+        7
+    } else {
+        index
+    }
 }
