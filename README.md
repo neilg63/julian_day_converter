@@ -110,7 +110,7 @@ fn main() {
 
 ### Release Notes
 #### 0.4.5 
-In the core `julian_day_to_unix_millis` and `julian_day_to_unixtime` functions,  `.round()` is applied before casting `f64` to `i64` floating-point truncation errors during repeated float/integer casts.
+In the core `julian_day_to_unix_millis` and `julian_day_to_unixtime` functions,  `.round()` is applied before casting `f64` to `i64` to minimise floating-point truncation errors during repeated float/integer casts.
 `DateRangeConversionError` now implements `fmt` and `julian_day_to_datetime` validates the minimum and maximum bounds within a range. 
 Thanks to [meteorgan](https://github.com/meteorgan) for these enhancements.
 
